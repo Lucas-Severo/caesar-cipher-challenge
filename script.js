@@ -13,6 +13,24 @@ async function cesarCypher() {
             throw err;
         console.log('Arquivo criado com sucesso!');
     });
+
+    // decrypt the text
+    const { numero_casas, cifrado: sentence } = response.data;
+    let decrypted = '';
+
+    for(letter of sentence.toLowerCase()) {
+        let charcode = letter.charCodeAt();
+        
+        if (charcode >= 97 && charcode <= 122) {
+            charcode = charcode - numero_casas;
+
+            charcode = charcode < 97 ? 123 - (97 - charcode) : charcode; 
+        }
+
+        decrypted += String.fromCharCode(charcode);
+    }
+
+    console.log(decrypted);
 }
 
 cesarCypher()
