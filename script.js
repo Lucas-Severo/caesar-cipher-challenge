@@ -1,5 +1,7 @@
 const fs = require('fs');
 const axios = require('axios');
+const sha1 = require('js-sha1');
+
 require('dotenv').config();
 
 async function cesarCypher() {
@@ -30,7 +32,9 @@ async function cesarCypher() {
         decrypted += String.fromCharCode(charcode);
     }
 
-    console.log(decrypted);
+    // encrypt the text to sha1
+    const shaEncrypted = sha1(decrypted);
+    console.log(shaEncrypted);
 }
 
 cesarCypher()
