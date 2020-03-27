@@ -1,6 +1,7 @@
 const fs = require('fs');
 const axios = require('axios');
 const sha1 = require('js-sha1');
+const FormData = require('form-data');
 
 require('dotenv').config();
 
@@ -39,6 +40,25 @@ async function cesarCypher() {
             throw err;
         console.log('Arquivo salvo com sucesso!');
     });
+
+    // send the file
+    const submit_url = `https://api.codenation.dev/v1/challenge/dev-ps/submit-solution?token=${process.env.TOKEN}`;
+    const form = new FormData();
+    const file = fs.createReadStream('answer.json');
+    form.append('answer', file);
+
+    try {
+        const response = await axios.post(submit_url, form, {
+            headers: {
+                ...form.getHeaders()
+            }
+        });
+
+        console.log("Score: " + response.data.score);
+
+    } catch(err) {
+        console.log("Error: ", err.response.data);
+    }
 }
 
 cesarCypher()
